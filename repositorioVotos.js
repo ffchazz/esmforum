@@ -1,4 +1,4 @@
-const bd = require('./esmforum/bd/bd_utils.js');
+const bd = require('./bd/bd_utils.js');
  
 // Garante que a tabela de votos exista no SQLite
 bd.exec(`
