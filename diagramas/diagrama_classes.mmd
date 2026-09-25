@@ -1,0 +1,47 @@
+classDiagram
+    direction TB
+ 
+    class Usuario {
+        +int id_usuario
+        +string nome
+        +string email
+    }
+ 
+    class Pergunta {
+        +int id_pergunta
+        +string texto
+        +int id_usuario
+        +int saldo_votos
+        +datetime data_criacao
+    }
+ 
+    class Resposta {
+        +int id_resposta
+        +int id_pergunta
+        +string texto
+        +int id_usuario
+        +datetime data_criacao
+    }
+ 
+    class Voto {
+        +int id_voto
+        +int id_pergunta
+        +int id_usuario
+        +int valor
+        +datetime data_voto
+    }
+ 
+    class Tag {
+        +int id_tag
+        +string nome
+        +string slug
+    }
+ 
+    %% Relacionamentos do Domínio
+    Usuario "1" --> "0..*" Pergunta : publica
+    Usuario "1" --> "0..*" Resposta : publica
+    Usuario "1" --> "0..*" Voto : realiza
+ 
+    Pergunta "1" *-- "0..*" Resposta : contem
+    Pergunta "1" --> "0..*" Voto : recebe
+    Pergunta "0..*" --> "1..3" Tag : categorizada_por

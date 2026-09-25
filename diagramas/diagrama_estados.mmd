@@ -1,0 +1,12 @@
+stateDiagram-v2
+    [*] --> Nova : cadastrar_pergunta()
+ 
+    Nova --> EmDiscussao : cadastrar_resposta()
+    Nova --> Destacada : receber_upvotes [saldo >= 5]
+    Nova --> Penalizada : receber_downvotes [saldo < 0]
+ 
+    EmDiscussao --> Destacada : receber_upvotes [saldo >= 5]
+    EmDiscussao --> Penalizada : receber_downvotes [saldo < 0]
+ 
+    Destacada --> EmDiscussao : receber_downvotes [saldo < 5]
+    Penalizada --> EmDiscussao : receber_upvotes [saldo >= 0]

@@ -1,0 +1,21 @@
+classDiagram
+    class MecanismoBusca {
+        <<interface>>
+        +buscar(termo) Array
+    }
+    class SqliteBuscaAdapter {
+        -bd
+        +buscar(termo) Array
+    }
+    class ElasticSearchAdapter {
+        -clientHttp
+        +buscar(termo) Array
+    }
+    class ServicoBusca {
+        -mecanismoBusca: MecanismoBusca
+        +pesquisar(palavraChave)
+    }
+ 
+    MecanismoBusca <|.. SqliteBuscaAdapter
+    MecanismoBusca <|.. ElasticSearchAdapter
+    ServicoBusca --> MecanismoBusca : utiliza

@@ -1,0 +1,29 @@
+flowchart TD
+    Inicio([Início]) --> A1[Usuário clica em Upvote ou Downvote]
+    A1 --> A2[Frontend envia requisição para a API]
+    A2 --> A3[Backend consulta histórico de votos da pergunta]
+    
+    A3 --> D1{Usuário já votou nesta pergunta?}
+    
+    %% Fluxo de Primeiro Voto
+    D1 -- Não --> A4[Persiste novo registro na tabela votos]
+    A4 --> A5[Ajusta saldo da pergunta +1 ou -1]
+    
+    %% Fluxos de Voto Existente
+    D1 -- Sim --> D2{Clicou no mesmo botão do voto atual?}
+    
+    %% Caso: Cancelar Voto (Desfazer)
+    D2 -- Sim --> A6[Remove registro de voto do banco]
+    A6 --> A7[Reverte o saldo da pergunta]
+    
+    %% Caso: Inverter Voto (+1 para -1 ou vice-versa)
+    D2 -- Não --> A8[Atualiza sentido do voto no banco]
+    A8 --> A9[Recalcula saldo aplicando variação de 2 pontos]
+    
+    %% Convergência para finalização
+    A5 --> A10[Backend retorna novo saldo de votos]
+    A7 --> A10
+    A9 --> A10
+    
+    A10 --> A11[Frontend atualiza o contador e botões na tela]
+    A11 --> Fim([Fim])

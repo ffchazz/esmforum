@@ -1,0 +1,22 @@
+flowchart TD
+    subgraph Cliente["Cliente (Navegador - Porta 3000)"]
+        UI["Camada de Apresentacao: React SPA<br/>(Pergunta.js, Resposta.js, Menu.js)"]
+    end
+ 
+    subgraph Servidor["Servidor Backend (Node.js - Porta 5000)"]
+        Ctrl["Camada de Controle: API REST<br/>(server.js - rotas e middlewares)"]
+        Model["Camada de Negocio: Regras de Dominio<br/>(modelo.js, votacaoService.js)"]
+        Dados["Camada de Acesso a Dados<br/>(repositorioVotos.js, bd_utils.js)"]
+ 
+        Ctrl -->|Chama regras de negocio| Model
+        Model -->|Solicita persistencia| Dados
+    end
+ 
+    subgraph Armazenamento["Persistencia"]
+        BD[("Banco SQLite<br/>(tabelas: perguntas, respostas, votos)")]
+    end
+ 
+    UI -->|Requisicao HTTP REST| Ctrl
+    Ctrl -->|Resposta JSON| UI
+    Dados -->|Instrucoes SQL| BD
+    BD -->|Retorno de dados| Dados

@@ -1,0 +1,18 @@
+classDiagram
+    class Notificacao {
+        <<interface>>
+        +enviar(destinatario, mensagem)
+    }
+    class NotificacaoInterna {
+        +enviar(destinatario, mensagem)
+    }
+    class NotificacaoEmail {
+        +enviar(destinatario, mensagem)
+    }
+    class NotificacaoFactory {
+        +criarNotificacao(tipo) Notificacao
+    }
+ 
+    Notificacao <|.. NotificacaoInterna
+    Notificacao <|.. NotificacaoEmail
+    NotificacaoFactory ..> Notificacao : instancia

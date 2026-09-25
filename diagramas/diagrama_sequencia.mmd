@@ -1,0 +1,40 @@
+sequenceDiagram
+    autonumber
+    actor U as Usuario
+    participant F as Frontend (React)
+    participant S as Servidor (Express)
+    participant M as Modelo (modelo.js)
+    participant BD as Banco (SQLite)
+ 
+    U->>F: Clica no botão Upvote (+1)
+    activate F
+    F->>S: POST /perguntas/1/voto { id_usuario: 1, tipo: 1 }
+    activate S
+ 
+    S->>M: votar_pergunta(id_pergunta, id_usuario, tipo)
+    activate M
+ 
+    M->>BD: query("SELECT tipo FROM votos WHERE id_pergunta = ? AND id_usuario = ?", [id_p, id_u])
+    activate BD
+    BD-->>M: null (nenhum voto anterior)
+    deactivate BD
+ 
+    M->>BD: exec("INSERT INTO votos (id_pergunta, id_usuario, tipo) VALUES (?, ?, ?)", [id_p, id_u, 1])
+    activate BD
+    BD-->>M: lastInsertRowid
+    deactivate BD
+ 
+    M->>BD: exec("UPDATE perguntas SET saldo_votos = saldo_votos + 1 WHERE id_pergunta = ?", [id_p])
+    activate BD
+    BD-->>M: ok
+    deactivate BD
+ 
+    M-->>S: { saldo_votos: 5, status: "registrado" }
+    deactivate M
+ 
+    S-->>F: HTTP 200 OK { saldo_votos: 5 }
+    deactivate S
+ 
+    F-->>U: Atualiza contador para (5) e destaca botão Upvote
+    deactivate F
+ 

@@ -1,0 +1,30 @@
+flowchart TD
+    Cliente["Navegador / Cliente HTTP<br/>(React SPA)"]
+ 
+    subgraph Camada_Apresentacao["1. Camada de Apresentacao / API"]
+        Rotas["Rotas Express<br/>(routes/perguntas.js, routes/votos.js)"]
+        Ctrl["Controllers<br/>(PerguntaController, VotacaoController)"]
+        Views["Views JSON<br/>(Formatadores / Serializers de Resposta)"]
+    end
+ 
+    subgraph Camada_Negocio["2. Camada de Negocio"]
+        Services["Servicos de Dominio<br/>(PerguntaService, VotacaoService)"]
+        Entidades["Modelos de Dominio<br/>(Pergunta, Voto)"]
+    end
+ 
+    subgraph Camada_Dados["3. Camada de Dados"]
+        Repos["Repositorios<br/>(PerguntaRepository, VotoRepository)"]
+        BD[("Banco SQLite")]
+    end
+ 
+    Cliente -->|1. Requisicao HTTP POST/GET| Rotas
+    Rotas -->|2. Repassa requisicao| Ctrl
+    Ctrl -->|3. Executa regra de negocio| Services
+    Services -->|4. Manipula entidades| Entidades
+    Services -->|5. Solicita persistencia| Repos
+    Repos -->|6. Executa SQL| BD
+    BD -->|7. Retorna dados brutos| Repos
+    Repos -->|8. Devolve dados estruturados| Services
+    Services -->|9. Retorna resultado| Ctrl
+    Ctrl -->|10. Envia dados para formatar| Views
+    Views -->|11. Resposta JSON estruturada| Cliente

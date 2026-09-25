@@ -1,0 +1,24 @@
+classDiagram
+    class OrdenacaoStrategy {
+        <<interface>>
+        +ordenar(perguntas) Array
+    }
+    class OrdenarPorVotos {
+        +ordenar(perguntas) Array
+    }
+    class OrdenarPorData {
+        +ordenar(perguntas) Array
+    }
+    class OrdenarPorRespostas {
+        +ordenar(perguntas) Array
+    }
+    class FeedPerguntas {
+        -estrategia: OrdenacaoStrategy
+        +definirEstrategia(estrategia)
+        +obterFeed() Array
+    }
+ 
+    OrdenacaoStrategy <|.. OrdenarPorVotos
+    OrdenacaoStrategy <|.. OrdenarPorData
+    OrdenacaoStrategy <|.. OrdenarPorRespostas
+    FeedPerguntas --> OrdenacaoStrategy : delega
