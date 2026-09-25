@@ -9,3 +9,10 @@ create table respostas (
   id_pergunta       integer      not null,
   texto             text         not null
 );  
+
+CREATE TABLE IF NOT EXISTS votos (
+  id_voto INTEGER PRIMARY KEY AUTOINCREMENT,
+  id_pergunta INTEGER NOT NULL,
+  id_usuario INTEGER NOT NULL,
+  tipo INTEGER NOT NULL
+);
