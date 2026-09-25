@@ -1,6 +1,6 @@
 const express = require('express');
 const modelo = require('./modelo.js');
-const RepositorioVotos = require('./repositorioVotos.js');
+const RepositorioVotos = require('../repositorioVotos.js');
 const { VotacaoService } = require('./votacaoService.js');
  
 const app = express();
